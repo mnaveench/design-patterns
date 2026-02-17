@@ -1,17 +1,17 @@
 ﻿using csharp;
 
-namespace csharp
+namespace csharp.StrategyPattern
 {
     public abstract class Duck
     {
         protected IFlyBehavior _flyBehavior;
         protected IQuackBehavior _quackBehavior;
 
-        protected void SetFlyBehavior(IFlyBehavior flyBehavior)
+        internal void SetFlyBehavior(IFlyBehavior flyBehavior)
         {
             _flyBehavior = flyBehavior;
         }
-        protected void QuackBehavior(IQuackBehavior quackBehavior)
+        internal void QuackBehavior(IQuackBehavior quackBehavior)
         {
             _quackBehavior = quackBehavior;
         }
@@ -23,7 +23,7 @@ namespace csharp
             _flyBehavior.Fly();
         }
 
-        public void PerformQuash()
+        public void PerformQuack()
         {
             _quackBehavior.Quack();
         }
@@ -39,7 +39,7 @@ namespace csharp
         public MallardDuck()
         {
             _flyBehavior = new FlyWithWings();
-            _quackBehavior = new QuackBehavior();
+            _quackBehavior = new QuackQuack();
         }
 
         public override void Display()
@@ -53,7 +53,7 @@ namespace csharp
         public RedheadDuck()
         {
             _flyBehavior = new FlyWithWings();
-            _quackBehavior = new QuackBehavior();
+            _quackBehavior = new QuackQuack();
         }
 
         public override void Display()
@@ -95,7 +95,7 @@ namespace csharp
         public ModelDuck()
         {
             _flyBehavior = new FlyNoWay();
-            _quackBehavior = new QuackBehavior();
+            _quackBehavior = new QuackQuack();
         }
 
         public override void Display()
@@ -109,7 +109,7 @@ namespace csharp
         void Quack();
     }
 
-    public sealed class QuackBehavior : IQuackBehavior
+    public sealed class QuackQuack : IQuackBehavior
     {
         public void Quack()
         {
@@ -194,6 +194,84 @@ namespace csharp
         private void Meow()
         {
             Console.WriteLine("meow sound");
+        }
+    }
+
+    public interface IWeaponBehavior
+    {
+        void UseWeapon();
+    }
+
+    public class SwordBehavior : IWeaponBehavior
+    {
+        public void UseWeapon()
+        {
+            Console.WriteLine("Swining a sword");
+        }
+    }
+
+    public class KnifeBehavior : IWeaponBehavior
+    {
+        public void UseWeapon()
+        {
+            Console.WriteLine("Cutting with a knife");
+        }
+    }
+
+    public class BowAndArrowBehavior : IWeaponBehavior
+    {
+        public void UseWeapon()
+        {
+            Console.WriteLine("Release an arrow");
+        }
+    }
+
+    public class AxeBehavior : IWeaponBehavior
+    {
+        public void UseWeapon()
+        {
+            Console.WriteLine("chopping with an axe");
+        }
+    }
+
+    public abstract class Character
+    { 
+        protected IWeaponBehavior WeaponBehavior { get; set; }
+        internal virtual void Fight()
+        {
+            WeaponBehavior.UseWeapon();
+        }
+    }
+
+    public class King : Character
+    {
+        public King()
+        {
+            WeaponBehavior = new SwordBehavior();
+        }
+    }
+
+    public class Queen : Character
+    {
+        public Queen()
+        {
+            WeaponBehavior = new BowAndArrowBehavior();
+        }
+    }
+
+    public class Knight : Character
+    {
+        public Knight()
+        {
+            WeaponBehavior = new KnifeBehavior();
+        }
+    }
+
+    public class Troll : Character
+    {
+        public Troll()
+        {
+            WeaponBehavior = new AxeBehavior();
         }
     }
 }
