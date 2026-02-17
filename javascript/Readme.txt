@@ -1,0 +1,1 @@
+This is JavaScript implementation of design patterns

@@ -1,0 +1,1 @@
+This is Java implementation of design patterns
